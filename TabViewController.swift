@@ -1,29 +1,31 @@
-//
-//  ViewController.swift
-//  AidedTradeApp
-//
 //  Created by Muhammad Abdullah on 19/12/2018.
 //  Copyright © 2018 Muhammad Abdullah - twaintec. All rights reserved.
-//
 
 import UIKit
 
 class TabViewController: UIViewController {
 
+    //Mark:- declare all viewControllers as a variable
+    
     var alertViewCntrl : UIViewController!
     var watchlistViewCntrl : UIViewController!
     var learnViewCntrl : UIViewController!
     var liveViewCntrl : UIViewController!
     var settingsViewCntrl : UIViewController!
     
-    
+    //Mark:- array of all viewcontrollers
     var viewControllers : [UIViewController]!
     
+    //Mark:- check selected Index
     var selectedIndex: Int = 0
+    
+    //Mark:- title of nav bar
     var navigationBarTitle : String = ""
 
-    
+    //Mark:- arrayOfAllButtons
     @IBOutlet var buttons : [UIButton]!
+    
+    //Mark:- array of all lables
     @IBOutlet var labels : [UILabel]!
     
     @IBOutlet weak var contentView: UIView!
@@ -33,10 +35,11 @@ class TabViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        
-        self.navigationController?.isNavigationBarHidden = false
+        //funtion to assign the title to navbar
         self.navigationBar(_titleWithIndex: selectedIndex)
 
+        
+        //call storyboard
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
         alertViewCntrl = storyboard.instantiateViewController(withIdentifier: "alertViewCntrl")
@@ -54,6 +57,7 @@ class TabViewController: UIViewController {
         
     }
 
+    //Mark:- didPressTab bar button
     @IBAction func didPressTab(_ sender: UIButton) {
         
         selectedIndex = sender.tag
@@ -108,11 +112,12 @@ class TabViewController: UIViewController {
         
     }
     
+    //Mark:- changeTappedBtnColor
     func changeTappedBtnColor(_selectedState:UIButton){
         
         if _selectedState.isSelected {
             
-            buttons[_selectedState.tag].tintColor = AppGlobals.greenColor
+            buttons[_selectedState.tag].tintColor = AppGlobals.greenColor 
             labels[_selectedState.tag].textColor = AppGlobals.greenColor
             
             _selectedState.isSelected = false
@@ -129,111 +134,3 @@ class TabViewController: UIViewController {
   }
 }
 
-extension UIView {
-    func addshadow(top: Bool,
-                   left: Bool,
-                   bottom: Bool,
-                   right: Bool,
-                   shadowRadius: CGFloat = 2.0) {
-        
-        self.layer.masksToBounds = false
-        self.layer.shadowOffset = CGSize(width: 0.0, height: 0.0)
-        self.layer.shadowRadius = shadowRadius
-        self.layer.shadowOpacity = 1.0
-        
-        let path = UIBezierPath()
-        var x: CGFloat = 0
-        var y: CGFloat = 0
-        var viewWidth = self.frame.width
-        var viewHeight = self.frame.height
-        
-        // here x, y, viewWidth, and viewHeight can be changed in
-        // order to play around with the shadow paths.
-        if (!top) {
-            y+=(shadowRadius+1)
-        }
-        if (!bottom) {
-            viewHeight-=(shadowRadius+1)
-        }
-        if (!left) {
-            x+=(shadowRadius+1)
-        }
-        if (!right) {
-            viewWidth-=(shadowRadius+1)
-        }
-        // selecting top most point
-        path.move(to: CGPoint(x: x, y: y))
-        // Move to the Bottom Left Corner, this will cover left edges
-        /*
-         |☐
-         */
-        path.addLine(to: CGPoint(x: x, y: viewHeight))
-        // Move to the Bottom Right Corner, this will cover bottom edge
-        /*
-         ☐
-         -
-         */
-        path.addLine(to: CGPoint(x: viewWidth, y: viewHeight))
-        // Move to the Top Right Corner, this will cover right edge
-        /*
-         ☐|
-         */
-        path.addLine(to: CGPoint(x: viewWidth, y: y))
-        // Move back to the initial point, this will cover the top edge
-        /*
-         _
-         ☐
-         */
-        path.close()
-        self.layer.shadowPath = path.cgPath
- }
-}
-
-extension UIView{
-    
-    func addShadow(to edges:[UIRectEdge], radius:CGFloat){
-        
-        let toColor = AppGlobals.greenColor
-        let fromColor =  AppGlobals.greenColor
-        
-        // Set up its frame.
-        let viewFrame = self.frame
-        for edge in edges{
-            let gradientlayer          = CAGradientLayer()
-            gradientlayer.colors       = [fromColor.cgColor,toColor.cgColor]
-            gradientlayer.shadowRadius = radius
-            
-            switch edge {
-            case UIRectEdge.top:
-                gradientlayer.startPoint = CGPoint(x: 0.5, y: 0.0)
-                gradientlayer.endPoint = CGPoint(x: 0.5, y: 1.0)
-                gradientlayer.frame = CGRect(x: 0.0, y: 0.0, width: viewFrame.width, height: gradientlayer.shadowRadius)
-            case UIRectEdge.bottom:
-                gradientlayer.startPoint = CGPoint(x: 0.5, y: 1.0)
-                gradientlayer.endPoint = CGPoint(x: 0.5, y: 0.0)
-                gradientlayer.frame = CGRect(x: 0.0, y: viewFrame.height - gradientlayer.shadowRadius, width: viewFrame.width, height: gradientlayer.shadowRadius)
-            case UIRectEdge.left:
-                gradientlayer.startPoint = CGPoint(x: 0.0, y: 0.5)
-                gradientlayer.endPoint = CGPoint(x: 1.0, y: 0.5)
-                gradientlayer.frame = CGRect(x: 0.0, y: 0.0, width: gradientlayer.shadowRadius, height: viewFrame.height)
-            case UIRectEdge.right:
-                gradientlayer.startPoint = CGPoint(x: 1.0, y: 0.5)
-                gradientlayer.endPoint = CGPoint(x: 0.0, y: 0.5)
-                gradientlayer.frame = CGRect(x: viewFrame.width - gradientlayer.shadowRadius, y: 0.0, width: gradientlayer.shadowRadius, height: viewFrame.height)
-            default:
-                break
-            }
-            self.layer.addSublayer(gradientlayer)
-        }
-        
-    }
-    
-    func removeAllSublayers(){
-        if let sublayers = self.layer.sublayers, !sublayers.isEmpty{
-            for sublayer in sublayers{
-                sublayer.removeFromSuperlayer()
-            }
-        }
-    }
-    
-}
