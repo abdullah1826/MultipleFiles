@@ -35,6 +35,9 @@ class AppGlobals: NSObject {
     }
     
     //Accessible: can access easily by shared.methodName()
+    
+    //Mark:- checkFontFamilyName
+    
     func checkFontFamilyName(){
     
         for family: String in UIFont.familyNames
@@ -48,6 +51,7 @@ class AppGlobals: NSObject {
     }
     
     //Unaccessible: can't access class functions with shared word, it's can be accessible by class name.
+    //Mark:- checkFontFamily
     class func checkFontFamily() {
         
         for family: String in UIFont.familyNames
@@ -62,12 +66,14 @@ class AppGlobals: NSObject {
         
     }
 
+    //Mark:- customNavBarColor
     func customNavBarColor(){
         
     UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.font: UIFont(name: "Arvo-Bold", size: 17) as Any,NSAttributedString.Key.foregroundColor : AppGlobals.greenColor]
         
     }
     
+    //Mark:- hideKeypad
     class func keypad(display:Bool, vu: UIView){
         
         if display == true {
@@ -81,7 +87,8 @@ class AppGlobals: NSObject {
         }
         
     }
- 
+    
+ //Mark:- instantiateStoryBoard
     class func instantiateStoryBoard(storyboardname: String, identifier: String){
         
         let storyboard = UIStoryboard(name: storyboardname, bundle: nil)
@@ -91,6 +98,7 @@ class AppGlobals: NSObject {
         
     }
     
+    //Mark:- isTextfieldEmpty
     class func isTextfieldEmpty(txtfld: UITextField) -> Bool {
         
         var value = Bool()
@@ -107,6 +115,7 @@ class AppGlobals: NSObject {
         return value
     }
     
+    //Mark:- isValidName
     class func isValid(name: String) -> Bool {
         
         // check the name is between 4 and 16 characters
@@ -119,11 +128,8 @@ class AppGlobals: NSObject {
         return true
     }
     
-    func signInApi(username: String, password: String){
-        
-        
-    }
     
+    //Mark:- changeTintColorOfImage
     func changeTintColor(imageName: String, color: UIColor){
         
         let origImage = UIImage(named: imageName);
@@ -132,6 +138,7 @@ class AppGlobals: NSObject {
     }
 
 
+    //Mark:- collectionViewWidth
     func collectionViewWidth(collectionVu: UICollectionView) -> CGFloat {
         
         let collectionViewSize = collectionVu.bounds.size
@@ -141,6 +148,7 @@ class AppGlobals: NSObject {
         
     }
     
+    //Mark:- collectionViewHeight
     func collectionViewHeight(collectionVu: UICollectionView) -> CGFloat {
         
         let collectionViewSize = collectionVu.bounds.size
@@ -150,7 +158,51 @@ class AppGlobals: NSObject {
         
     }
     
+    //Mark:- heightForLabel
+    func heightForLabel(text:String, font:UIFont, width:CGFloat) -> CGFloat{
+        
+        // pass string ,font , LableWidth
+        
+        let label:UILabel = UILabel(frame: CGRect(x: 0, y: 0, width: width, height: CGFloat.greatestFiniteMagnitude))
+        
+        label.numberOfLines = 0
+        label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.font = font
+        label.text = text
+        label.sizeToFit()
+        
+        return label.frame.height
+    }
+    //Mark:- textWidth
+    func textWidth(font: UIFont, text: String) -> CGFloat {
+        
+        let myText = text as NSString
+        let rect = CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)
+        let labelSize = myText.boundingRect(with: rect, options: .usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: font], context: nil)
+        
+        return ceil(labelSize.width)
+    }
     
+    //Mark:- getTextheightByAssigningWidth
+    func height(withConstrainedWidth width: CGFloat, font: UIFont, text: String) -> CGFloat {
+        
+        let myText = text as NSString
+        let constraintRect = CGSize(width: width, height: .greatestFiniteMagnitude)
+        let boundingBox = myText.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: font], context: nil)
+        
+        return ceil(boundingBox.height)
+    }
+    
+    //Mark:- getTextWidthByAssigningHeight
+    func width(withConstrainedHeight height: CGFloat, font: UIFont, text: String) -> CGFloat {
+        
+        let myText = text as NSString
+        let constraintRect = CGSize(width: .greatestFiniteMagnitude, height: height)
+        let boundingBox = myText.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: font], context: nil)
+        
+        return ceil(boundingBox.width)
+    }
+
 
     
 }
